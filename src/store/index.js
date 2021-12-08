@@ -6,7 +6,6 @@ const store = createStore({
     modules: {auth},
     state(){
         return {
-            companyId: '',
             companyId: companyId ? companyId : null
         }
     },
