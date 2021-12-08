@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import authHeader from '../services/auth-header';
+import DriverHeader from '../services/driver.service';
 import {mapGetters} from 'vuex'
 export default {
     name: 'NewDriver',
@@ -56,20 +56,13 @@ export default {
     methods:{
         handleSubmit(){
             this.Loading =true
-            var config = {
-                method: 'post',
-                url: `http://demodev.remis.ng/Driver/Add/${this.companyId}`,
-                data: JSON.stringify(this.driver),
-                headers: authHeader()
-            };
 
-            this.axios(config)
+            DriverHeader.addDriver(this.driver, this.companyId)
             .then(response => {
                 this.message = response.data.message
                 this.status = response.data.status
                 this.driver = {}
             })
-            
             .catch(error => {
                 this.message = error.data.message
                 this.status = error.data.status

@@ -14,6 +14,7 @@ export default{
     handleLogout(){
       this.$store.dispatch('auth/logout');
       this.$router.push('/')
+      localStorage.removeItem('companyId');
     }
   },
   computed:{

@@ -1,18 +1,20 @@
 import { createStore } from 'vuex'
 import { auth } from "./auth.module";
 
-
+let companyId = localStorage.getItem('companyId');
 const store = createStore({
     modules: {auth},
     state(){
         return {
-            companyId: ''
+            companyId: '',
+            companyId: companyId ? companyId : null
         }
     },
 
     mutations: {
         getCompanyId(state, id){
             state.companyId = id
+            localStorage.setItem('companyId', id);
         },
     },
 

@@ -26,7 +26,7 @@
     </div>
 </template>
 <script>
-import authHeader from '../services/auth-header';
+import DriverHeader from '../services/driver.service';
 export default {
     name: 'Driver',
     data(){
@@ -35,13 +35,7 @@ export default {
         }
     },
     beforeMount(){
-        var config = {
-            method: 'get',
-            url: `http://demodev.remis.ng/Driver/Details/${this.$route.params.id}`,
-            headers: authHeader()
-        };
-
-        this.axios(config)
+        DriverHeader.driverDetails(this.$route.params.id)
         .then(response => {
             this.driver = response.data.data
         })

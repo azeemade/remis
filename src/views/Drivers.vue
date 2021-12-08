@@ -29,9 +29,9 @@
                         <td>{{driver.name}}</td>
                         <td>{{driver.phone}}</td>
                         <td>{{driver.email}}</td>
-                        <td><router-link :to="`/driver/${driver.id}`">view</router-link></td>
-                        <td><router-link :to="`/driver/edit/${driver.id}`">edit</router-link></td>
-                        <td><a class="btn text-danger" @click="handleDelete(driver.id)">Delete</a></td>
+                        <td><router-link class="btn btn-success" :to="`/driver/${driver.id}`">view</router-link></td>
+                        <td><router-link class="btn btn-warning" :to="`/driver/edit/${driver.id}`">edit</router-link></td>
+                        <td><a class="btn btn-danger" @click="handleDelete(driver.id)">Delete</a></td>
                     </tr>
                 </table>
             </div>
@@ -39,7 +39,7 @@
     </div>
 </template>
 <script>
-import authHeader from '../services/auth-header';
+import DriverHeader from '../services/driver.service';
 export default{
     name: 'Drivers',
     data(){
@@ -52,36 +52,21 @@ export default{
     },
     methods:{
         handleDelete(id){
-            var config = {
-                method: 'delete',
-                url: `http://demodev.remis.ng/Driver/Delete/${this.companyId}/${id}`,
-                headers: authHeader()
-            };
-            this.axios(config)
+            DriverHeader.removeDriver(id, this.companyId)
             .then(response => {
                 this.message =  response.data.message
                 this.status = response.data.status
             })
         },
         getDrivers(companyId){
-            var config = {
-                method: 'get',
-                url: `http://demodev.remis.ng/Drivers?count=false&id=${companyId}`,
-                headers: authHeader()
-            };
-            this.axios(config)
+            DriverHeader.driversList(companyId)
             .then(response => {
                 this.drivers =  response.data.data.drivers
             })
         }
     },
     beforeMount(){
-        var config = {
-            method: 'get',
-            url: 'http://demodev.remis.ng/Company/Details',
-            headers: authHeader()
-        };
-        this.axios(config)
+        DriverHeader.companyDetails()
         .then(response => {
             let id = response.data.data.company.id
             this.$store.commit('getCompanyId', id)

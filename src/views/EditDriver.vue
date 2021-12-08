@@ -28,7 +28,7 @@
                 <input id="state" class="form-control" v-model="driver.state">
             </div>
             <div class="d-flex justify-content-center mb-5">
-                <button class="btn btn-primary w-50" @click="handleEdit" :disabled="Loading">Edit</button>
+                <button class="btn btn-primary w-50" @click="handleEdit" :disabled="Loading">Update</button>
             </div>
             <p>{{message}}</p>
         </div>
@@ -38,7 +38,7 @@
     </div>
 </template>
 <script>
-import authHeader from '../services/auth-header';
+import DriverHeader from '../services/driver.service';
 import {mapGetters} from 'vuex';
 export default {
     name: 'EditDriver',
@@ -55,6 +55,7 @@ export default {
     methods:{
         handleEdit(){
             this.Loading = true;
+
             var driver = {
                 name: this.driver.name,
                 email: this.driver.email,
@@ -63,14 +64,8 @@ export default {
                 city: this.driver.city,
                 state: this.driver.state,
             }
-            var config = {
-                method: 'put',
-                url: `http://demodev.remis.ng/Driver/Edit/${this.companyId}/${this.$route.params.id}`,
-                data: JSON.stringify(driver),
-                headers: authHeader()
-            };
 
-            this.axios(config)
+            DriverHeader.updateDriver(driver, this.companyId, this.$route.params.id)
             .then(response => {
                 this.driver = response.data.data
                 this.message = response.data.message
@@ -83,14 +78,7 @@ export default {
         }
     },
     mounted(){
-        var config = {
-            method: 'get',
-            url: `http://demodev.remis.ng/Driver/Details/${this.$route.params.id}`,
-            //data: JSON.stringify(this.driver),
-            headers: authHeader()
-        };
-
-        this.axios(config)
+        DriverHeader.driverDetails(this.$route.params.id)
         .then(response => {
             this.driver = response.data.data
         })
